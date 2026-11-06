@@ -4,8 +4,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Kernal\Router;
 
-// ********** Router ********** //
-
 $router = new Router();
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';

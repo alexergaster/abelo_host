@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
+use App\Repositories\PostRepository;
+
 class PostService
 {
-    public function test()
-    {
-        echo "test";
-    }
+
 }
