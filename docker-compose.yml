@@ -8,6 +8,11 @@ services:
       - "8080:80"
     volumes:
       - ./:/var/www/html
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       mysql:
         condition: service_healthy
