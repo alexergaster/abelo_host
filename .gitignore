@@ -1,0 +1,10 @@
+/vendor/
+/node_modules/
+
+/templates_c/*
+
+/.env
+
+.DS_Store
+.idea/
+.vscode/

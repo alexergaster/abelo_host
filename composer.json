@@ -1,0 +1,17 @@
+{
+  "name": "project/abelo_host",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "т"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "smarty/smarty": "^5.0"
+  }
+}
