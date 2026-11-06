@@ -1,0 +1,73 @@
+@use "variables" as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: $color-background;
+  color: $color-text;
+  font-family: $font-family;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p {
+  margin-top: 0;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid $color-primary;
+  outline-offset: 4px;
+}
+
+.container {
+  width: min(100% - 40px, $container-width);
+  margin-inline: auto;
+
+  &--narrow {
+    max-width: $content-width;
+  }
+}
+
+.text-primary {
+  color: $color-primary;
+}
+
+.site-main {
+  min-height: 65vh;
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .container {
+    width: min(100% - 32px, $container-width);
+  }
+}
