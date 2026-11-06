@@ -14,6 +14,12 @@ RUN docker-php-ext-install \
 
 RUN a2enmod rewrite
 
+RUN printf '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>\n' > /etc/apache2/conf-available/app.conf \
+    && a2enconf app
+
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \

@@ -1,16 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Smarty\Smarty;
+use App\Kernal\Router;
 
-$smarty = new Smarty();
+// ********** Router ********** //
 
-$smarty->setTemplateDir(__DIR__ . '/../templates');
-$smarty->setCompileDir(__DIR__ . '/../templates_c');
+$router = new Router();
 
-$smarty->assign('pageTitle', 'PHP Blog');
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$smarty->display('home.tpl');
+$router->load(dirname(__DIR__) . '/routes/web.php');
+
+$router->load(dirname(__DIR__) . '/routes/api.php', '/api');
+
+$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
