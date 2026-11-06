@@ -1,0 +1,1 @@
+<h1>{$post.views|escape}</h1>

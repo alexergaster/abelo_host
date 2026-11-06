@@ -2,14 +2,17 @@
 
 namespace App\Controllers\Posts;
 
+use App\Kernal\Database;
+use App\Repositories\PostRepository;
 use App\Services\PostService;
 
-class BaseController
+abstract class BaseController
 {
-    protected PostService $postService;
+    protected readonly PostService $service;
 
     public function __construct()
     {
-        $this->postService = new PostService();
+        $repository = new PostRepository(Database::getConnection());
+        $this->service = new PostService($repository);
     }
 }
