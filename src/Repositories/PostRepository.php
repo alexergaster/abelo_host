@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\DTO\PostFilter;
+use DateTimeImmutable;
 use PDO;
 
 readonly class PostRepository
@@ -10,15 +12,67 @@ readonly class PostRepository
     {
     }
 
-    public function getPosts(int $limit = 6, int $offset = 0): ?array
+    /**
+     * @throws \Exception
+     */
+    private function buildConditions(PostFilter $filter): array
     {
+        $conditions = ["status = 'published'", "published_at <= NOW()",];
+
+        $params = [];
+
+        if ($filter->viewsMin !== null) {
+            $conditions[] = 'views >= :views_min';
+            $params['views_min'] = $filter->viewsMin;
+        }
+
+        if ($filter->viewsMax !== null) {
+            $conditions[] = 'views <= :views_max';
+            $params['views_max'] = $filter->viewsMax;
+        }
+
+        if ($filter->dateFrom !== null) {
+            $conditions[] = 'published_at >= :date_from';
+            $params['date_from'] = $filter->dateFrom . ' 00:00:00';
+        }
+
+        if ($filter->dateTo !== null) {
+            $conditions[] = 'published_at < :date_to';
+            $params['date_to'] = (new DateTimeImmutable($filter->dateTo))
+                ->modify('+1 day')
+                ->format('Y-m-d 00:00:00');
+        }
+
+        return [implode(' AND ', $conditions), $params,];
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getPosts(PostFilter $filter, int $limit = 6, int $offset = 0): ?array
+    {
+        [$where, $params] = $this->buildConditions($filter);
+
+        $sortOptions = [
+            'newest' => 'published_at DESC, id DESC',
+            'oldest' => 'published_at ASC, id ASC',
+            'views_desc' => 'views DESC, id DESC',
+            'views_asc' => 'views ASC, id ASC',
+        ];
+
+        $orderBy = $sortOptions[$filter->sort];
+
         $stmt = $this->pdo->prepare("
             SELECT id, title, slug, description, image, views, published_at
             FROM posts
-            WHERE status = 'published' AND published_at <= NOW()
-            ORDER BY published_at DESC, id DESC
+           WHERE {$where}
+            ORDER BY {$orderBy}
             LIMIT :limit OFFSET :offset
         ");
+
+        foreach ($params as $name => $value) {
+            $stmt->bindValue(':' . $name, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+        }
 
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -28,12 +82,23 @@ readonly class PostRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function countPosts(): int
+    /**
+     * @throws \Exception
+     */
+    public function countPosts(PostFilter $filter): int
     {
-        $stmt = $this->pdo->query("
+        [$where, $params] = $this->buildConditions($filter);
+
+        $stmt = $this->pdo->prepare("
             SELECT COUNT(*) FROM posts
-            WHERE status = 'published' AND published_at <= NOW()
+            WHERE {$where}
         ");
+
+        foreach ($params as $name => $value) {
+            $stmt->bindValue(':' . $name, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
 
         return (int)$stmt->fetchColumn();
     }

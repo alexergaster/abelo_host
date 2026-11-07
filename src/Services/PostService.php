@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\PostFilter;
 use App\Repositories\PostRepository;
 
 readonly class PostService
@@ -10,17 +11,20 @@ readonly class PostService
     {
     }
 
-    public function getPosts(int $page = 1, int $perPage = 6): array
+    /**
+     * @throws \Exception
+     */
+    public function getPosts(PostFilter $filter, int $page = 1, int $perPage = 6): array
     {
         $page = max(1, $page);
         $perPage = max(1, min($perPage, 100));
 
-        $total = $this->postRepository->countPosts();
+        $total = $this->postRepository->countPosts($filter);
         $totalPages = max(1, (int)ceil($total / $perPage));
         $page = min($page, $totalPages);
         $offset = ($page - 1) * $perPage;
 
-        $posts = $this->postRepository->getPosts($perPage, $offset);
+        $posts = $this->postRepository->getPosts($filter, $perPage, $offset);
 
         return [
             'posts' => $posts,
