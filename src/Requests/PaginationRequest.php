@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Requests;
-
-use const App\Controllers\Posts\POSTS_PER_PAGE;
-
+const POSTS_PER_PAGE = 6;
 const MAX_PER_PAGE = 100;
 
 readonly class PaginationRequest

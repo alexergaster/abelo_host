@@ -29,6 +29,6 @@ class IndexController extends BaseController
 
         header('Content-Type: text/html; charset=utf-8');
 
-        $smarty->display('categories/index.tpl');
+        $smarty->display('pages/categories/index.tpl');
     }
 }

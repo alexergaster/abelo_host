@@ -47,6 +47,6 @@ class ShowController extends BaseController
 
         header('Content-Type: text/html; charset=utf-8');
 
-        $smarty->display('post.tpl');
+        $smarty->display('pages/posts/show.tpl');
     }
 }

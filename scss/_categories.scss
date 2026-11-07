@@ -49,6 +49,148 @@
     flex-wrap: wrap;
   }
 }
+.category-page {
+
+  // Category hero
+  &__hero {
+    padding: 64px 0 72px;
+    background: $color-background-muted;
+    border-bottom: 1px solid $color-border;
+    text-align: center;
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__title {
+    margin: 12px 0 20px;
+
+    color: $color-text;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+  }
+
+  &__description {
+    max-width: 620px;
+    margin: 0;
+
+    color: $color-text-secondary;
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  // Content
+  &__content {
+    padding-top: 64px;
+  }
+
+  &__results {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid $color-border;
+
+    color: $color-text-muted;
+    font-size: 14px;
+
+    strong {
+      color: $color-text;
+      font-weight: 700;
+    }
+  }
+}
+
+// Reusable breadcrumb
+.breadcrumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-bottom: 24px;
+
+  color: $color-text-muted;
+  font-size: 13px;
+
+  a {
+    transition: color $transition;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  span:last-child {
+    color: $color-primary;
+    font-weight: 600;
+  }
+}
+
+// Tablet
+@media (max-width: $breakpoint-tablet) {
+
+  .category-page {
+    &__hero {
+      padding: 48px 0 56px;
+    }
+
+    &__content {
+      padding-top: 48px;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: $breakpoint-mobile) {
+
+  .category-page {
+
+    &__hero {
+      padding: 36px 0 44px;
+    }
+
+    &__title {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    &__description {
+      font-size: 16px;
+    }
+
+    &__meta {
+      margin-top: 20px;
+    }
+
+    &__content {
+      padding-top: 36px;
+    }
+
+    &__results {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+  }
+}
 
 .btn {
   display: inline-flex;

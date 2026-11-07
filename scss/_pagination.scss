@@ -1,0 +1,119 @@
+@use "variables" as *;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  margin-top: 48px;
+
+  &__pages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__item {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    min-width: 44px;
+    height: 44px;
+    padding: 0 14px;
+
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+
+    background: $color-background;
+    color: $color-text-secondary;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+
+    transition:
+            background-color $transition,
+            border-color $transition,
+            color $transition,
+            transform $transition;
+
+    &:hover:not(&--active):not(&--disabled) {
+      border-color: $color-primary;
+      color: $color-primary;
+      background: #eff6ff;
+      transform: translateY(-2px);
+    }
+
+    &--active {
+      background: $color-primary;
+      border-color: $color-primary;
+      color: #fff;
+      cursor: default;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    &--disabled {
+      color: #cbd5e1;
+      background: $color-background-muted;
+      cursor: not-allowed;
+    }
+  }
+
+  &__arrow {
+    min-width: auto;
+    padding: 0 18px;
+  }
+
+  &__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 28px;
+    height: 44px;
+
+    color: $color-text-muted;
+    font-size: 18px;
+    user-select: none;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .pagination {
+    gap: 10px;
+    margin-top: 32px;
+
+    &__pages {
+      gap: 5px;
+    }
+
+    &__item {
+      min-width: 36px;
+      height: 38px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    &__arrow {
+      padding: 0 12px;
+    }
+
+    &__arrow-label {
+      display: none;
+    }
+
+    &__ellipsis {
+      min-width: 18px;
+      height: 38px;
+    }
+  }
+}

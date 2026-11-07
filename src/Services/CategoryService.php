@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\CategoryDTO;
 use App\DTO\PostDTO;
+use App\DTO\PostFilter;
 use App\Repositories\CategoryRepository;
 
 readonly class CategoryService
@@ -11,6 +12,44 @@ readonly class CategoryService
     public function __construct(private CategoryRepository $categoryRepository)
     {
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function getPostsByCategory(string $slug, PostFilter $filter, int $page = 1, int $perPage = 6): ?array
+    {
+        $category = $this->categoryRepository->findBySlug($slug);
+
+        if ($category === null) {
+            return null;
+        }
+
+        $page = max(1, $page);
+        $perPage = max(1, min($perPage, 100));
+
+        $total = $this->categoryRepository->countCategoryPosts((int) $category['id'], $filter);
+        $totalPages = max(1, (int)ceil($total / $perPage));
+        $page = min($page, $totalPages);
+        $offset = ($page - 1) * $perPage;
+
+        $posts = $this->categoryRepository->getCategoryPosts((int) $category['id'], $filter, $perPage, $offset);
+
+        return [
+            'category' => $category,
+            'posts' => $posts,
+            'pagination' => [
+                'currentPage' => $page,
+                'perPage' => $perPage,
+                'total' => $total,
+                'totalPages' => $totalPages,
+                'hasPrevious' => $page > 1,
+                'hasNext' => $page < $totalPages,
+                'previousPage' => $page > 1 ? $page - 1 : null,
+                'nextPage' => $page < $totalPages ? $page + 1 : null,
+            ],
+        ];
+    }
+
 
     public function getPostsInCategory(int $limit = 3): ?array
     {
