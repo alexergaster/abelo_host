@@ -17,12 +17,5 @@
             <span class="site-logo__icon">&lt;/&gt;</span>
             <span>abelo<span class="text-primary">.dev</span></span>
         </a>
-
-        <nav class="site-nav" aria-label="Main navigation">
-            <a href="/">Articles</a>
-            <a href="/categories">Categories</a>
-            <a href="/about">About</a>
-        </nav>
-
     </div>
 </header>
