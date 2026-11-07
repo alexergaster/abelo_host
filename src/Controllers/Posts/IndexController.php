@@ -2,22 +2,18 @@
 
 namespace App\Controllers\Posts;
 
+use App\Requests\PaginationRequest;
 
-use Smarty\Smarty;
+const POSTS_PER_PAGE = 6;
 
 class IndexController extends BaseController
 {
     public function __invoke(): void
     {
-        $smarty = new Smarty();
+        $pagination = new PaginationRequest($_GET);
 
-        $smarty->setTemplateDir(dirname(__DIR__, 3) . '/templates');
-        $smarty->setCompileDir(dirname(__DIR__, 3) . '/templates_c');
+        header('Content-Type: json-application; charset=utf-8');
 
-        $smarty->assign('pageTitle', 'PHP Blog');
-
-        header('Content-Type: text/html; charset=utf-8');
-
-        $smarty->display('home.tpl');
+        echo json_encode(['data' => $this->service->getPosts($pagination->getPage(), $pagination->getPerPage())]);
     }
 }

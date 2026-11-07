@@ -6,5 +6,5 @@ use App\Kernal\Router;
 
 /** @var Router $router */
 
-$router->get('/', IndexController::class);
+$router->get('/posts', IndexController::class);
 $router->get('/posts/{id}', ShowController::class);

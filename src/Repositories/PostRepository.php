@@ -10,6 +10,34 @@ readonly class PostRepository
     {
     }
 
+    public function getPosts(int $limit = 6, int $offset = 0): ?array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT id, title, slug, description, image, views, published_at
+            FROM posts
+            WHERE status = 'published' AND published_at <= NOW()
+            ORDER BY published_at DESC, id DESC
+            LIMIT :limit OFFSET :offset
+        ");
+
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countPosts(): int
+    {
+        $stmt = $this->pdo->query("
+            SELECT COUNT(*) FROM posts
+            WHERE status = 'published' AND published_at <= NOW()
+        ");
+
+        return (int)$stmt->fetchColumn();
+    }
+
     public function getPost(string $id): ?array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE id = :id LIMIT 1");
